@@ -1,0 +1,26 @@
+# Lightweight environment for motif scanning with MOODS
+# MOODS is much easier to install than MEME suite's FIMO
+name: motif_scanning
+channels:
+  - conda-forge
+  - bioconda
+  - defaults
+dependencies:
+  - python=3.10
+  - numpy>=1.24
+  - biopython>=1.81
+  - pysam>=0.21
+  - pandas>=2.0
+  - scipy>=1.10
+  
+  # MOODS for motif scanning
+  - moods>=1.9.4.1
+  
+  # For VCF/BED processing
+  - bcftools>=1.17
+  - bedtools>=2.31
+  - tabix>=1.11
+  
+  # Utilities
+  - tqdm>=4.65
+  - pigz>=2.7

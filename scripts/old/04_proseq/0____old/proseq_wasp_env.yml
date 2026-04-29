@@ -1,0 +1,59 @@
+# =============================================================================
+# proseq_wasp_env.yml — Conda environment for PRO-seq / WASP pipeline
+# =============================================================================
+# Creates a fresh environment with samtools >=1.17 (needed for markdup -S)
+# and all other pipeline tools.
+#
+# USAGE:
+#   mamba env create -f proseq_wasp.yml          # fresh install
+#   mamba env create -f proseq_wasp.yml -n proseq_wasp_v2   # different name
+#
+# To replace the old environment:
+#   conda deactivate
+#   conda env remove -n proseq_wasp
+#   mamba env create -f proseq_wasp.yml
+# =============================================================================
+
+name: proseq_wasp_env
+channels:
+  - conda-forge
+  - bioconda
+  - defaults
+
+dependencies:
+  # --- Core language ---
+  - python >=3.10,<3.13
+
+  # --- Alignment & BAM processing ---
+  - bowtie2 >=2.5
+  - samtools >=1.17
+  - htslib >=1.17
+  - bcftools >=1.17
+  - pysam >=0.21
+
+  # --- Read trimming & QC ---
+  - cutadapt >=4.0
+  - fastqc >=0.12
+
+  # --- Data download ---
+  - sra-tools >=3.0
+
+  # --- Deduplication (backup if samtools markdup has issues) ---
+  - picard >=3.0
+
+  # --- Genome utilities ---
+  - bedtools >=2.31
+  - ucsc-bedgraphtobigwig
+  - ucsc-liftover
+
+  # --- Compression & utilities ---
+  - pigz
+
+  # --- QC reporting ---
+  - multiqc >=1.17
+
+  # --- Python libraries (used by downstream scripts / WASP) ---
+  - numpy
+  - matplotlib-base
+  - pyyaml
+  - scipy

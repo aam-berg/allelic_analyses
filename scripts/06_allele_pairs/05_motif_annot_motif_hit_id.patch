@@ -1,0 +1,34 @@
+--- a/02_annotate_motifs.R
++++ b/02_annotate_motifs.R
+@@ -173,6 +173,11 @@
+ 
+ if (nrow(motif_dt) == 0) {
+     cat("WARNING: No hits on standard chromosomes. Writing empty output.\n")
++    # Preserve schema even on empty: motif_hit_id must always be present
++    # so that downstream rbinds/joins from 06_allele_pairs/ are well-typed.
++    motif_dt[, motif_hit_id := character(0)]
++    setcolorder(motif_dt, c("motif_hit_id",
++                             setdiff(names(motif_dt), "motif_hit_id")))
+     fwrite(motif_dt, file.path(opt$outdir, paste0(motif_id, "_annotated.tsv.gz")),
+            sep = "\t", compress = "gzip")
+     quit(save = "no", status = 0)
+@@ -250,6 +255,18 @@
+ 
+ motif_dt[, row_id := NULL]
+ 
++# Add motif_hit_id for foreign-key joining with 06_allele_pairs/.
++# Colon-stripping handles the case where MEME-style names (e.g.
++# "AC0001:DLX/LHX:Homeodomain") propagate into BED filenames; the
++# MOODS-scanned consensus_pwms.meme has unique AC000X prefixes, so the
++# stripped form is collision-free. If the BED filenames are already
++# sanitized (no colons), this sub() is a no-op.
++motif_id_short <- sub(":.*$", "", motif_id)
++motif_dt[, motif_hit_id := paste(motif_id_short, chrom,
++                                  start + 1L, strand, sep = "__")]
++setcolorder(motif_dt, c("motif_hit_id",
++                         setdiff(names(motif_dt), "motif_hit_id")))
++
+ out_path <- file.path(opt$outdir, paste0(motif_id, "_annotated.tsv.gz"))
+ fwrite(motif_dt, out_path, sep = "\t", na = "NA", compress = "gzip")
+ cat("  Wrote:", out_path, "\n")
+ 

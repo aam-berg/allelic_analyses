@@ -1,0 +1,15 @@
+--- a/config.sh
++++ b/config.sh
+@@ -68,7 +68,11 @@
+ # within ±MAX_PAIR_FLANK_BP of either edge. Beyond this distance, we don't
+ # expect a SNP to affect motif function (no PWM impact, no direct ATAC
+ # accessibility relationship at the motif).
+-MAX_PAIR_FLANK_BP=200
++# NOTE: extended from 200 -> 800 to match 05_motif_annot's max flank bin.
++# The ATAC-coupling distance diagnostic in 07_diagnostics/ needs this
++# extended range. Downstream analyses can filter pairs by
++# snp_distance_from_motif_edge_bp if they only want close SNPs.
++MAX_PAIR_FLANK_BP=800
+ 
+ # ---- PWM scoring ----
+ # Pseudocount added to PWM entries to avoid log(0). Standard MEME default.

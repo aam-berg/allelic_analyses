@@ -1,0 +1,32 @@
+# Folders to exclude
+0____delete_asap/
+0____scripts____old____backup/
+
+# Python / Jupyter artifacts
+__pycache__/
+*.pyc
+*.pyo
+.ipynb_checkpoints/
+
+# R artifacts
+.Rhistory
+.RData
+.Rproj.user/
+
+# SLURM logs
+*.out
+*.err
+*.log
+slurm-*
+
+# OS / editor noise
+.DS_Store
+*.swp
+.vscode/
+.idea/
+
+# Secrets — never commit these
+*.key
+*.pem
+.env
+.env.*
